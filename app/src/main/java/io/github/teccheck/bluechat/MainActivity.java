@@ -89,6 +89,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        Log.d(getLocalClassName(), "onResume()");
+
+        registerReceiver(receiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
+        if (bluetoothAdapter.isDiscovering())
+            bluetoothAdapter.cancelDiscovery();
+        bluetoothAdapter.startDiscovery();
+
+        super.onResume();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 

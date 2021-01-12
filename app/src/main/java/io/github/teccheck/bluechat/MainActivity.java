@@ -22,6 +22,11 @@ import com.google.android.material.textfield.TextInputEditText;
 public class MainActivity extends AppCompatActivity {
 
     public static final int REQUEST_ENABLE_BT = 0xABCD;
+    public static final int CHAT_MODE_CLIENT = 8;
+    public static final int CHAT_MODE_SERVER = 0;
+    public static final String EXTRA_CHAT_MODE = "io.github.teccheck.bluechat.extra_chat_mode";
+    public static final String EXTRA_ROOM_NAME = "io.github.teccheck.bluechat.extra_room_name";
+    public static final String EXTRA_BLUETOOTH_ADDRESS = "io.github.teccheck.bluechat.extra_bluetooth_address";
 
     BluetoothAdapter bluetoothAdapter;
     BluetoothDevicesListAdapter recyclerAdapter;
@@ -144,7 +149,10 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(view);
         builder.setCancelable(true);
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
-            // TODO: Start Chat with sever parameters
+            Intent intent = new Intent(this, ChatActivity.class);
+            intent.putExtra(EXTRA_CHAT_MODE, CHAT_MODE_SERVER);
+            intent.putExtra(EXTRA_ROOM_NAME, editText.getText().toString());
+            startActivity(intent);
         });
 
         builder.create().show();
@@ -152,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
 
     // If the user taps on a device
     public void onItemClick(int position, Object value) {
-        // TODO: Start Chat with client parameters
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra(EXTRA_CHAT_MODE, CHAT_MODE_CLIENT);
+        intent.putExtra(EXTRA_BLUETOOTH_ADDRESS, ((BluetoothDevice) value).getAddress());
+        startActivity(intent);
     }
 }

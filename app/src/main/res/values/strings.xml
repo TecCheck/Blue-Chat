@@ -14,4 +14,7 @@
     <string name="hint_room_name">Room Name</string>
 
     <string name="ok">OK</string>
+
+    <string name="hint_message">Message...</string>
+    <string name="content_description_send_button">Send</string>
 </resources>

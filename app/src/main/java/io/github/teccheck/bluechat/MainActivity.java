@@ -68,9 +68,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(receiver);
         Log.d(getLocalClassName(), "onDestroy()");
+
+        unregisterReceiver(receiver);
+        if (bluetoothAdapter.isDiscovering())
+            bluetoothAdapter.cancelDiscovery();
+
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(getLocalClassName(), "onPause()");
+
+        unregisterReceiver(receiver);
+        if (bluetoothAdapter.isDiscovering())
+            bluetoothAdapter.cancelDiscovery();
+
+        super.onPause();
     }
 
     @Override
@@ -118,8 +133,6 @@ public class MainActivity extends AppCompatActivity {
         builder.setCancelable(true);
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             // TODO: Start Chat with sever parameters
-            Log.d(getLocalClassName(), "unregisterReceiver");
-            unregisterReceiver(receiver);
         });
 
         builder.create().show();
@@ -128,7 +141,5 @@ public class MainActivity extends AppCompatActivity {
     // If the user taps on a device
     public void onItemClick(int position, Object value) {
         // TODO: Start Chat with client parameters
-        Log.d(getLocalClassName(), "unregisterReceiver");
-        unregisterReceiver(receiver);
     }
 }

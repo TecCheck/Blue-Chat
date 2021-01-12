@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     BluetoothDevicesListAdapter recyclerAdapter;
 
     RecyclerView recyclerView;
+    LinearLayout newRoomLayout;
     TextView deviceNameText;
 
     @Override
@@ -35,10 +36,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        newRoomLayout = findViewById(R.id.layout_new_room);
         recyclerView = findViewById(R.id.list_devices);
         deviceNameText = findViewById(R.id.text_device_name);
-
-        registerReceiver(receiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
 
         // Check Bluetooth availability
         if (bluetoothAdapter == null) {
@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void onBluetoothEnabled() {
+        newRoomLayout.setOnClickListener((v) -> newRoom());
         recyclerAdapter = new BluetoothDevicesListAdapter(bluetoothAdapter.getBondedDevices(), this::onItemClick);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(recyclerAdapter);
@@ -90,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         if (bluetoothAdapter.isDiscovering())
             bluetoothAdapter.cancelDiscovery();
         bluetoothAdapter.startDiscovery();
+
+        registerReceiver(receiver, new IntentFilter(BluetoothDevice.ACTION_FOUND));
         Log.d(getLocalClassName(), bluetoothAdapter.isDiscovering() ? "Discovering ..." : "Discovery failed");
     }
 
@@ -103,6 +106,24 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    // If the user taps on new room
+    private void newRoom() {
+        View view = getLayoutInflater().inflate(R.layout.edit_text_new_room, null);
+        TextInputEditText editText = view.findViewById(R.id.edit_text_room_name);
+
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle(R.string.dialog_room_name_title);
+        builder.setView(view);
+        builder.setCancelable(true);
+        builder.setPositiveButton(R.string.ok, (dialog, which) -> {
+            // TODO: Start Chat with sever parameters
+            Log.d(getLocalClassName(), "unregisterReceiver");
+            unregisterReceiver(receiver);
+        });
+
+        builder.create().show();
+    }
 
     // If the user taps on a device
     public void onItemClick(int position, Object value) {

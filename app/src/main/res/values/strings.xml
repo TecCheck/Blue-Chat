@@ -3,11 +3,15 @@
 
     <string name="device_name">Device name</string>
     <string name="available_devices">Available devices</string>
+    <string name="new_room">New room</string>
 
     <string name="content_description_device_icon">Device Icon</string>
 
     <string name="dialog_no_bluetooth_title">No Bluetooth</string>
     <string name="dialog_no_bluetooth_message">Your phone has no Bluetooth Functionality</string>
+
+    <string name="dialog_room_name_title">Please enter room name</string>
+    <string name="hint_room_name">Room Name</string>
 
     <string name="ok">OK</string>
 </resources>

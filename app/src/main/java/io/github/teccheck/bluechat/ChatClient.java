@@ -2,6 +2,7 @@ package io.github.teccheck.bluechat;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -31,7 +32,9 @@ public class ChatClient extends Thread {
     public void run() {
         try {
             BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address);
-            client = new RemoteChatClient(device.createRfcommSocketToServiceRecord(MainActivity.SERVER_UUID), "Name");
+            BluetoothSocket socket = device.createRfcommSocketToServiceRecord(MainActivity.SERVER_UUID);
+            socket.connect();
+            client = new RemoteChatClient(socket, "Name");
 
             while (run) {
                 try {
@@ -41,9 +44,10 @@ public class ChatClient extends Thread {
                         mainThreadHandler.post(() -> listener.onMessageReceived(message));
                     }
 
-                    for(Message message : messageQue)
-                        client.send(message);
-
+                    if(!messageQue.isEmpty()){
+                        client.send(messageQue.get(0));
+                        messageQue.remove(0);
+                    }
                 } catch (IOException | JSONException e) {
                     e.printStackTrace();
                 }

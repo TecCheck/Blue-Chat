@@ -55,6 +55,10 @@ public class RemoteChatClient {
         output.write(bytes);
     }
 
+    public String getAddress() {
+        return socket.getRemoteDevice().getAddress();
+    }
+
     public void close() throws IOException {
         socket.close();
     }

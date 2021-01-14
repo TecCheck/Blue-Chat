@@ -32,7 +32,7 @@ public class ChatClient extends Thread {
     public void run() {
         try {
             BluetoothDevice device = BluetoothAdapter.getDefaultAdapter().getRemoteDevice(address);
-            BluetoothSocket socket = device.createRfcommSocketToServiceRecord(MainActivity.SERVER_UUID);
+            BluetoothSocket socket = device.createRfcommSocketToServiceRecord(Constants.SERVER_UUID);
             socket.connect();
             client = new RemoteChatClient(socket, "Name");
 

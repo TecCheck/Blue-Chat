@@ -41,12 +41,12 @@ public class ChatActivity extends AppCompatActivity implements ChatListener, Vie
         sendButton.setOnClickListener(this);
 
         Intent intent = getIntent();
-        chatMode = intent.getIntExtra(MainActivity.EXTRA_CHAT_MODE, -1);
+        chatMode = intent.getIntExtra(Constants.EXTRA_CHAT_MODE, -1);
 
-        if (chatMode == MainActivity.CHAT_MODE_CLIENT)
-            setupClient(intent.getStringExtra(MainActivity.EXTRA_BLUETOOTH_ADDRESS));
-        else if (chatMode == MainActivity.CHAT_MODE_SERVER)
-            setupServer(intent.getStringExtra(MainActivity.EXTRA_ROOM_NAME));
+        if (chatMode == Constants.CHAT_MODE_CLIENT)
+            setupClient(intent.getStringExtra(Constants.EXTRA_BLUETOOTH_ADDRESS));
+        else if (chatMode == Constants.CHAT_MODE_SERVER)
+            setupServer(intent.getStringExtra(Constants.EXTRA_ROOM_NAME));
     }
 
     @Override
@@ -78,9 +78,9 @@ public class ChatActivity extends AppCompatActivity implements ChatListener, Vie
     @Override
     public void onClick(View v) {
         Message message = new Message("Me", messageText.getText().toString(), System.currentTimeMillis());
-        if (chatMode == MainActivity.CHAT_MODE_CLIENT)
+        if (chatMode == Constants.CHAT_MODE_CLIENT)
             client.send(message);
-        else if (chatMode == MainActivity.CHAT_MODE_SERVER)
+        else if (chatMode == Constants.CHAT_MODE_SERVER)
             server.send(message);
     }
 

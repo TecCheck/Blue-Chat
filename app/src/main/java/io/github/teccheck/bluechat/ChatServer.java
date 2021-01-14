@@ -32,7 +32,7 @@ public class ChatServer extends Thread {
     @Override
     public void run() {
         try {
-            BluetoothServerSocket socket = BluetoothAdapter.getDefaultAdapter().listenUsingRfcommWithServiceRecord(MainActivity.SERVER_NAME, MainActivity.SERVER_UUID);
+            BluetoothServerSocket socket = BluetoothAdapter.getDefaultAdapter().listenUsingRfcommWithServiceRecord(Constants.SERVER_NAME, Constants.SERVER_UUID);
             acceptThread = new AcceptThread(socket);
             acceptThread.start();
 

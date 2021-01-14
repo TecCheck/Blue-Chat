@@ -23,15 +23,6 @@ import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int REQUEST_ENABLE_BT = 0xABCD;
-    public static final int CHAT_MODE_CLIENT = 8;
-    public static final int CHAT_MODE_SERVER = 0;
-    public static final String EXTRA_CHAT_MODE = "io.github.teccheck.bluechat.extra_chat_mode";
-    public static final String EXTRA_ROOM_NAME = "io.github.teccheck.bluechat.extra_room_name";
-    public static final String EXTRA_BLUETOOTH_ADDRESS = "io.github.teccheck.bluechat.extra_bluetooth_address";
-    public static final String SERVER_NAME = "BlueChat";
-    public static final UUID SERVER_UUID = UUID.fromString("77d3f8ec-35b8-44f9-be93-94365f520844");
-
     BluetoothAdapter bluetoothAdapter;
     BluetoothDevicesListAdapter recyclerAdapter;
 
@@ -67,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         if (!bluetoothAdapter.isEnabled()) {
             // Display a dialog that asks the user to enable Bluetooth
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+            startActivityForResult(enableBtIntent, Constants.REQUEST_ENABLE_BT);
             return;
         }
 
@@ -113,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_ENABLE_BT && resultCode == RESULT_OK)
+        if (requestCode == Constants.REQUEST_ENABLE_BT && resultCode == RESULT_OK)
             onBluetoothEnabled();
     }
 
@@ -154,8 +145,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setCancelable(true);
         builder.setPositiveButton(R.string.ok, (dialog, which) -> {
             Intent intent = new Intent(this, ChatActivity.class);
-            intent.putExtra(EXTRA_CHAT_MODE, CHAT_MODE_SERVER);
-            intent.putExtra(EXTRA_ROOM_NAME, editText.getText().toString());
+            intent.putExtra(Constants.EXTRA_CHAT_MODE, Constants.CHAT_MODE_SERVER);
+            intent.putExtra(Constants.EXTRA_ROOM_NAME, editText.getText().toString());
             startActivity(intent);
         });
 
@@ -165,8 +156,8 @@ public class MainActivity extends AppCompatActivity {
     // If the user taps on a device
     public void onItemClick(int position, Object value) {
         Intent intent = new Intent(this, ChatActivity.class);
-        intent.putExtra(EXTRA_CHAT_MODE, CHAT_MODE_CLIENT);
-        intent.putExtra(EXTRA_BLUETOOTH_ADDRESS, ((BluetoothDevice) value).getAddress());
+        intent.putExtra(Constants.EXTRA_CHAT_MODE, Constants.CHAT_MODE_CLIENT);
+        intent.putExtra(Constants.EXTRA_BLUETOOTH_ADDRESS, ((BluetoothDevice) value).getAddress());
         startActivity(intent);
     }
 }
